@@ -6,41 +6,55 @@ typedef struct tdado{
 } tdado;
 typedef struct{
 	tdado fila[MAX];
-	int ini,fim;
+	int ini,fim,qtd;
 } tfila;
 //------------------------
 void inicializa(tfila *f){
 	f->ini = 0;
-	f->fim = -1;	
+	f->fim = -1;
+	f->qtd = 0;	
+	
 }
 //------------------------
 int enqueue(tfila *f, tdado x){//Enfileirar
-	if(f->fim == MAX-1) //Já usei todas as fichas da fila
+	if(f->qtd == MAX) //Já usei todas as fichas da fila
 	return 0;
 	//Inserindo porque tem espaço
+	if(	f->fim == MAX-1)//se estou na última posição
+		f->fim = 0;	//pulo para zero 0
+    else 
 	f->fim++;
 	f->fila[f->fim] = x;
+	f->qtd++;
 	return 1;
 }
 //------------------------
 tdado dequeue(tfila *f){
 	tdado aux = f->fila[f->ini];
+	if(f->ini == MAX-1)
+	   f->ini = 0;	
+    else
     f->ini++;
+	f->qtd--;        
     return aux;
 }
 //------------------------
 int isEmpty(tfila f){
-	if(f.fim < f.ini)//Fila está vazia
+	if(f.qtd == 0)//Fila está vazia
 	  return 1;
 	else
 	  return 0;
 }
 //------------------------
 void mostra(tfila f){
-	while(f.ini <= f.fim){
-		printf("%s:%d |", f.fila[f.ini].nome,
+	int i;
+	for(i=1;i<=f.qtd;i++){
+				printf("%s:%d |", f.fila[f.ini].nome,
 		                  f.fila[f.ini].idade);
-		 f.ini++;                 
+		 if(f.ini == MAX -1)
+		    f.ini = 0;
+		 else                 
+		    f.ini++;                 
 	}//Fim while
 	printf("\n");
 }
@@ -62,6 +76,8 @@ int main(){
 	int op;
 	inicializa(&f1);
 	do{
+		printf("Inicio[%d] | Fim[%d]\n",f1.ini,f1.fim);
+		
 		mostra(f1);
 		op = menu();
 		switch(op){
@@ -83,7 +99,7 @@ int main(){
 				break;
 			case 3:
 			 break;	
-			case 0: printf("Saindo .... ;)\n");	    
+			case 0: printf("Saindo ....\n");	    
 		}// fim switch
 	    getch(); // system("pause");
 	    system("cls");
